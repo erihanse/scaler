@@ -35,9 +35,10 @@ class AutoScaler(object):
             mode={'replicated':{'replicas':new_service_replica_count}}
         )
 
-    def run_auto_scaler(self, poll_interval):
+    def run_auto_scaler(self, poll_interval=10):
         '''
         Runs the auto-scaler until the program is stopped. The auto-scaler
         updates every @poll_interval seconds.
         '''
-        pass
+        while True:
+            pass
