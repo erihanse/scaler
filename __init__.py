@@ -2,7 +2,7 @@
 Package auto_scaler
 '''
 
-from auto_scaler import AutoScaler
+from . import AutoScaler
 
 __all__ = ['auto_scaler']
 
