@@ -50,6 +50,8 @@ class AutoScaler(object):
         second over last elapsed second (req_rate).
         See https://cbonte.github.io/haproxy-dconv/1.6/management.html#9.1 for
         more information.
+
+        Kind of ugly, but didn't bother using csv when a one-liner will do.
         '''
         fd = urllib2.urlopen('http://localhost:7000/haproxy?stats;csv')
         conn_rate = fd.read().split('\n')[3].split(',')[46]
