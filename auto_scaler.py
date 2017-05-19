@@ -3,6 +3,12 @@ Module auto_scaler
 '''
 
 import docker
+import time
+
+CONTAINER_CAPACITY = 5
+'''
+How many connections per second each container can handle.
+'''
 
 class AutoScaler(object):
     '''
@@ -35,11 +41,20 @@ class AutoScaler(object):
             mode={'replicated':{'replicas':new_service_replica_count}}
         )
 
-    def run_auto_scaler(self, func, poll_interval=10):
+    def run_auto_scaler(self, poll_interval=10):
         '''
         Runs the auto-scaler until the program is stopped. The auto-scaler
         updates every @poll_interval seconds.
         '''
-        func()
+        desired_replica_count = 1
         while True:
-            pass
+        # Calculate desired value
+            # Get current load
+            connection_rate = get_connection_rate()
+            # Set desired_replica_count
+            desired_replica_count = (connection_rate / CONTAINER_CAPACITY) + 1
+            # Do scaling
+            scale_service(desired_replica_count)
+            time.sleep(poll_interval)
+
+
