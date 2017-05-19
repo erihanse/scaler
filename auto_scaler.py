@@ -30,7 +30,7 @@ class AutoScaler(object):
         self.service_name = service_name
         self.placement_constraints = placement_constraints
         self.client = docker.from_env()
-        self.client = self.client.services.list(
+        self.service = self.client.services.list(
             filters={'name':service_name}
         )[0]
 
@@ -47,8 +47,6 @@ class AutoScaler(object):
             constraints=self.placement_constraints,
             mode={'replicated':{'replicas':new_service_replica_count}}
         )
-
-
 
     def get_connection_rate(self):
         '''
