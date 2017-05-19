@@ -22,7 +22,7 @@ class AutoScaler(object):
         image_name,
         service_name,
         placement_constraints,
-        loglevel=INFO
+        loglevel=logging.INFO
     ):
         self.image_name = image_name
         self.service_name = service_name
