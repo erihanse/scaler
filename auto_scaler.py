@@ -53,6 +53,7 @@ class AutoScaler(object):
         '''
         fd = urllib2.urlopen('http://localhost:7000/haproxy?stats;csv')
         conn_rate = fd.read().split('\n')[3].split(',')[47] # <- ???
+        return conn_rate
 
     def run_auto_scaler(self, poll_interval=10):
         '''
