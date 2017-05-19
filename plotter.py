@@ -29,8 +29,6 @@ def plot_graph(container_values, request_values):
     fig.tight_layout()
     plt.show()
 
-
-
 # if __name__ == '__main__':
 #     container_values = []
 #     request_values = []
