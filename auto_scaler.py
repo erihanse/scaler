@@ -65,7 +65,7 @@ class AutoScaler(object):
         while True:
         # Calculate desired value
             # Get current load
-            connection_rate = get_connection_rate()
+            connection_rate = self.get_connection_rate()
             # Set desired_replica_count
             desired_replica_count = (connection_rate / CONTAINER_CAPACITY) + 1
             # Do scaling
