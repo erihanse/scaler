@@ -8,8 +8,13 @@ def jalla():
     print "hei"
 
 def main():
+#    webautoscaler = AutoScaler(
+#        image_name="erihanse/php-web:latest",
+#        service_name="php-web-service",
+#        placement_constraints=['node.role==worker']
+#    )
     webautoscaler = AutoScaler(
-        image_name="erihanase/php-web:latest",
+        image_name="erihanse/php-web",
         service_name="php-web-service",
         placement_constraints=['node.role==worker']
     )
