@@ -83,5 +83,5 @@ class AutoScaler(object):
                 str(desired_replica_count))
             # Do scaling
 
-            scale_service(desired_replica_count)
+            self.scale_service(desired_replica_count)
             time.sleep(poll_interval)
