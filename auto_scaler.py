@@ -16,6 +16,8 @@ How many connections per second each container can handle.
 class AutoScaler(object):
     '''
     Contains properties and methods necessary for scaling a service in Docker.
+    Set loglevel=logging.DEBUG for logging to screen when running the auto
+    scaler.
     '''
     def __init__(
         self,
@@ -63,13 +65,12 @@ class AutoScaler(object):
         conn_rate = fd.read().split('\n')[3].split(',')[46]
         return int(conn_rate)
 
-    def run_auto_scaler(self, poll_interval=10):
+    def run_auto_scaler(self, poll_interval=5):
         '''
         Runs the auto-scaler until the program is stopped. The auto-scaler
         updates every @poll_interval seconds.
         '''
         desired_replica_count = 1
-        poll_interval = 4
         while True:
         # Calculate desired value
             # Get current load
@@ -82,5 +83,5 @@ class AutoScaler(object):
                 str(desired_replica_count))
             # Do scaling
 
-            # scale_service(desired_replica_count)
+            scale_service(desired_replica_count)
             time.sleep(poll_interval)
