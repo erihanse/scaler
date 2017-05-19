@@ -43,7 +43,7 @@ class AutoScaler(object):
             mode={'replicated':{'replicas':new_service_replica_count}}
         )
 
-    def get_connection_rate():
+    def get_connection_rate(self):
         '''
         Gets HAproxy stats. The 3rd from the call to the stat page returns
         http-in frontend stats, and the 47th column contains HTTP requests per
@@ -53,8 +53,6 @@ class AutoScaler(object):
         '''
         fd = urllib2.urlopen('http://localhost:7000/haproxy?stats;csv')
         conn_rate = fd.read().split('\n')[3].split(',')[47] # <- ???
-
-
 
     def run_auto_scaler(self, poll_interval=10):
         '''
