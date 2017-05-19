@@ -46,13 +46,13 @@ class AutoScaler(object):
     def get_connection_rate(self):
         '''
         Gets HAproxy stats. The 3rd from the call to the stat page returns
-        http-in frontend stats, and the 47th column contains HTTP requests per
-        second over last elapsed second (req_rate)
+        http-in frontend stats, and the 46th column contains HTTP requests per
+        second over last elapsed second (req_rate).
         See https://cbonte.github.io/haproxy-dconv/1.6/management.html#9.1 for
         more information.
         '''
         fd = urllib2.urlopen('http://localhost:7000/haproxy?stats;csv')
-        urllib2.urlopen('http://localhost:7000/haproxy?stats;csv').read().split('\n')[3].split(',')[46]
+        conn_rate = fd.read().split('\n')[3].split(',')[46]
         return conn_rate
 
     def run_auto_scaler(self, poll_interval=10):
