@@ -70,5 +70,6 @@ class AutoScaler(object):
             # Set desired_replica_count
             desired_replica_count = (connection_rate / CONTAINER_CAPACITY) + 1
             # Do scaling
+            print desired_replica_count
             scale_service(desired_replica_count)
             time.sleep(poll_interval)
