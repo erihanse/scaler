@@ -5,7 +5,8 @@ Module auto_scaler
 import docker
 import time
 import urllib2
-
+import logging
+import sys
 
 CONTAINER_CAPACITY = 5
 '''
@@ -16,7 +17,13 @@ class AutoScaler(object):
     '''
     Contains properties and methods necessary for scaling a service in Docker.
     '''
-    def __init__(self, image_name, service_name, placement_constraints):
+    def __init__(
+        self,
+        image_name,
+        service_name,
+        placement_constraints,
+        loglevel=INFO
+    ):
         self.image_name = image_name
         self.service_name = service_name
         self.placement_constraints = placement_constraints
@@ -24,6 +31,8 @@ class AutoScaler(object):
         self.client = self.client.services.list(
             filters={'name':service_name}
         )[0]
+
+        logging.basicConfig(stream=sys.stderr, level=loglevel)
 
     def scale_service(self, new_service_replica_count):
         '''
@@ -68,8 +77,9 @@ class AutoScaler(object):
 
             # Set desired_replica_count
             desired_replica_count = (connection_rate / CONTAINER_CAPACITY) + 1
-            print "connection_rate: " + str(connection_rate)
-            print "desired_replica_count: " + str(desired_replica_count)
+            logging.debug("connection_rate: " + str(connection_rate))
+            logging.debug("desired_replica_count: " + \
+                str(desired_replica_count))
             # Do scaling
 
             # scale_service(desired_replica_count)
