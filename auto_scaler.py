@@ -6,6 +6,7 @@ import docker
 import time
 import urllib2
 
+
 CONTAINER_CAPACITY = 5
 '''
 How many connections per second each container can handle.
