@@ -21,12 +21,7 @@ class AutoScaler(object):
         self.service_name = service_name
         self.placement_constraints = placement_constraints
         self.client = docker.from_env()
-
-    def get_service(self, service_name):
-        '''
-        Returns the service this @AutoScaler runs for.
-        '''
-        return self.client.services.list(
+        self.client = self.client.services.list(
             filters={'name':service_name}
         )[0]
 
@@ -35,13 +30,14 @@ class AutoScaler(object):
         Scales the service so that the service has @new_service_replica_count
         amount of containers.
         '''
-        service = self.get_service(self.service_name)
-        service.update(
+        self.service.update(
             image=self.image_name,
             name=self.service_name,
             constraints=self.placement_constraints,
             mode={'replicated':{'replicas':new_service_replica_count}}
         )
+
+
 
     def get_connection_rate(self):
         '''
@@ -51,7 +47,8 @@ class AutoScaler(object):
         See https://cbonte.github.io/haproxy-dconv/1.6/management.html#9.1 for
         more information.
 
-        Kind of ugly, but didn't bother using csv when a one-liner will do.
+        Yes, it is ugly. Unfortunately haproxy doesn't return stats in easy-to-
+        handle but didn't bother using csv when a one-liner will do.
         '''
         fd = urllib2.urlopen('http://localhost:7000/haproxy?stats;csv')
         conn_rate = fd.read().split('\n')[3].split(',')[46]
@@ -63,13 +60,17 @@ class AutoScaler(object):
         updates every @poll_interval seconds.
         '''
         desired_replica_count = 1
+        poll_interval = 4
         while True:
         # Calculate desired value
             # Get current load
             connection_rate = self.get_connection_rate()
+
             # Set desired_replica_count
             desired_replica_count = (connection_rate / CONTAINER_CAPACITY) + 1
+            print "connection_rate: " + str(connection_rate)
+            print "desired_replica_count: " + str(desired_replica_count)
             # Do scaling
-            print desired_replica_count
+
             # scale_service(desired_replica_count)
             time.sleep(poll_interval)
