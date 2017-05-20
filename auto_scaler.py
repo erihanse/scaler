@@ -36,12 +36,18 @@ class AutoScaler(object):
 
         logging.basicConfig(stream=sys.stderr, level=loglevel)
 
+
+    def get_service():
+        return self.client.services.list(
+            filters={'name':service_name}
+        )[0]
+
     def scale_service(self, new_service_replica_count):
         '''
         Scales the service so that the service has @new_service_replica_count
         amount of containers.
         '''
-        self.service.update(
+        self.get_service().service.update(
             image=self.image_name,
             name=self.service_name,
             constraints=self.placement_constraints,
