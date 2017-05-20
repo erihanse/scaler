@@ -37,7 +37,7 @@ class AutoScaler(object):
         logging.basicConfig(stream=sys.stderr, level=loglevel)
 
 
-    def get_service():
+    def get_service(self):
         return self.client.services.list(
             filters={'name':service_name}
         )[0]
