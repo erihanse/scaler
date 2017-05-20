@@ -17,7 +17,10 @@ class AutoScaler(object):
     '''
     Contains properties and methods necessary for scaling a service in Docker.
     Set loglevel=logging.DEBUG for logging to screen when running the auto
-    scaler.
+    scaler. We cannot put service as property of our AutoScaler, even though
+    there is a 1:1 relationship between AutoScaler and docker.models.services.
+     Service. This seems to be because the object changes whenever scaling is
+    done.
     '''
     def __init__(
         self,
@@ -30,9 +33,6 @@ class AutoScaler(object):
         self.service_name = service_name
         self.placement_constraints = placement_constraints
         self.client = docker.from_env()
-        self.service = self.client.services.list(
-            filters={'name':service_name}
-        )[0]
 
         logging.basicConfig(stream=sys.stderr, level=loglevel)
 
@@ -47,7 +47,7 @@ class AutoScaler(object):
         Scales the service so that the service has @new_service_replica_count
         amount of containers.
         '''
-        self.get_service().service.update(
+        self.get_service().update(
             image=self.image_name,
             name=self.service_name,
             constraints=self.placement_constraints,
