@@ -39,7 +39,7 @@ class AutoScaler(object):
 
     def get_service(self):
         return self.client.services.list(
-            filters={'name':service_name}
+            filters={'name':self.service_name}
         )[0]
 
     def scale_service(self, new_service_replica_count):
