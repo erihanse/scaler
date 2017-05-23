@@ -68,12 +68,14 @@ class AutoScaler(object):
 
         # Start by getting stats from haproxy
         content = urllib2.urlopen('http://localhost:7000/haproxy?stats;csv')
-        iocontent = StringIO(content)
+        content = content.read()
         fieldnames = content.split('\n')[0].split(',')
+        iocontent = StringIO(content)
         reader = csv.DictReader(iocontent, fieldnames)
+        print fieldnames
 
         for row in reader:
-            if 'http-in' in row['pxname']:
+            if 'http-in' in row['# pxname']:
                 return int(row['req_rate'])
 
     def run_auto_scaler(self, poll_interval=5):
