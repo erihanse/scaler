@@ -1,5 +1,8 @@
 '''
 Module auto_scaler
+
+---
+https://github.com/erihanse/scaler
 '''
 
 import docker
@@ -13,9 +16,7 @@ from StringIO import StringIO
 
 
 CONTAINER_CAPACITY = 5
-'''
-How many connections per second each container can handle.
-'''
+'''How many connections per second each container can handle.'''
 
 class AutoScaler(object):
     '''
@@ -23,8 +24,7 @@ class AutoScaler(object):
     Set loglevel=logging.INFO for logging to screen when running the auto
     scaler. We cannot put service as property of our AutoScaler, even though
     there is a 1:1 relationship between AutoScaler and docker.models.services.
-     Service. This seems to be because the object changes whenever scaling is
-    done.
+    This seems to be because the object changes whenever scaling is done.
     '''
     def __init__(
         self,
@@ -60,19 +60,19 @@ class AutoScaler(object):
 
     def get_connection_rate(self):
         '''
+        Returns req_rate from ha-proxy for the front-facing end.
+
         See https://cbonte.github.io/haproxy-dconv/1.6/management.html#9.1 for
         more information.
         '''
-        # Originally did it this way, but prettier to use DictReader
-        # conn_rate = fd.read().split('\n')[3].split(',')[46]
+        # Originally did it following way, but prettier to use DictReader
+        #   conn_rate = fd.read().split('\n')[3].split(',')[46]
 
-        # Start by getting stats from haproxy
         content = urllib2.urlopen('http://localhost:7000/haproxy?stats;csv')
         content = content.read()
         fieldnames = content.split('\n')[0].split(',')
         iocontent = StringIO(content)
         reader = csv.DictReader(iocontent, fieldnames)
-        print fieldnames
 
         for row in reader:
             if 'http-in' in row['# pxname']:
