@@ -11,7 +11,7 @@ import csv
 
 from StringIO import StringIO
 
-csv.DictReader
+
 CONTAINER_CAPACITY = 5
 '''
 How many connections per second each container can handle.
@@ -20,7 +20,7 @@ How many connections per second each container can handle.
 class AutoScaler(object):
     '''
     Contains properties and methods necessary for scaling a service in Docker.
-    Set loglevel=logging.DEBUG for logging to screen when running the auto
+    Set loglevel=logging.INFO for logging to screen when running the auto
     scaler. We cannot put service as property of our AutoScaler, even though
     there is a 1:1 relationship between AutoScaler and docker.models.services.
      Service. This seems to be because the object changes whenever scaling is
@@ -89,8 +89,9 @@ class AutoScaler(object):
 
             # Set desired_replica_count
             desired_replica_count = (connection_rate / CONTAINER_CAPACITY) + 1
-            logging.debug("connection_rate: " + str(connection_rate))
-            logging.debug("desired_replica_count: " + \
+
+            logging.info("connection_rate: " + str(connection_rate))
+            logging.info("desired_replica_count: " + \
                 str(desired_replica_count))
             # Do scaling
 
