@@ -42,9 +42,16 @@ class AutoScaler(object):
 
 
     def get_service(self):
+        '''
+        Returns a docker.Serivce object.
+        '''
         return self.client.services.list(
             filters={'name':self.service_name}
         )[0]
+
+    def get_container_count(self):
+        service = self.get_service()
+        return service.attrs['Spec']['Mode']['Replicated']['Replicas']
 
     def scale_service(self, new_service_replica_count):
         '''
