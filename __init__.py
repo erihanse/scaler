@@ -1,4 +1,4 @@
-
+'''
 Package auto_scaler
 '''
 from auto_scaler import AutoScaler
