@@ -55,7 +55,7 @@ class AutoScaler(object):
 
     def scale_service(self, new_service_replica_count):
         '''
-        Scales the service so that the service has @new_service_replica_count
+        Scales the service so that the service has new_service_replica_count
         amount of containers.
         '''
         self.get_service().update(
