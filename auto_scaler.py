@@ -20,11 +20,12 @@ CONTAINER_CAPACITY = 5
 
 class AutoScaler(object):
     '''
-    Contains properties and methods necessary for scaling a service in Docker.
-    Set loglevel=logging.INFO for logging to screen when running the auto
-    scaler. We cannot put service as property of our AutoScaler, even though
-    there is a 1:1 relationship between AutoScaler and docker.models.services.
-    This seems to be because the object changes whenever scaling is done.
+    Contains properties and methods necessary for scaling a service
+    in Docker. Set loglevel=logging.INFO for logging to screen when
+    running the auto scaler. We cannot put service as property of
+    our AutoScaler, even though there is a 1:1 relationship between
+    AutoScaler and docker.models.services. This seems to be because
+    the object changes whenever scaling is done.
     '''
     def __init__(
         self,
@@ -55,8 +56,8 @@ class AutoScaler(object):
 
     def scale_service(self, new_service_replica_count):
         '''
-        Scales the service so that the service has new_service_replica_count
-        amount of containers.
+        Scales the service so that the service has
+        new_service_replica_count amount of containers.
         '''
         self.get_service().update(
             image=self.image_name,
@@ -69,11 +70,12 @@ class AutoScaler(object):
         '''
         Returns req_rate from ha-proxy for the front-facing end.
 
-        See https://cbonte.github.io/haproxy-dconv/1.6/management.html#9.1 for
-        more information.
+        See
+        https://cbonte.github.io/haproxy-dconv/1.6/management.html#9.1
+        for more information.
         '''
         # Originally did it following way, but prettier to use DictReader
-        #   conn_rate = fd.read().split('\n')[3].split(',')[46]
+        # conn_rate = fd.read().split('\n')[3].split(',')[46]
 
         content = urllib2.urlopen('http://localhost:7000/haproxy?stats;csv')
         content = content.read()
